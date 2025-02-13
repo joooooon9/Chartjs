@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>차트 연습</title>
+</head>
+<style>
+    .chart-con {
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+        gap: 50px;
+        width: 700px;
+    }
+</style>
+
+<body>
+    <div class="chart-con">
+        <canvas id="line"></canvas>
+        <canvas id="bars"></canvas>
+        <canvas id="bubble"></canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script src="./temp.js"></script>
+    <script>
+        const ctx = document.getElementById('line');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: times,
+                datasets: [
+                    {
+                        label: '배송(˚C)',
+                        data: xdata_1
+                    },
+                    {
+                        label: '외부(˚C)',
+                        data: xdata_2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        font: {
+                            size: 30,
+                        },
+                        text: '실시간 상품 온도'
+                    },
+                },
+                scales: {
+                    x: {
+                        grid: {
+
+                        },
+                        axis: 'x',
+                        title: {
+                            display: true,
+                            font: {
+                                size: 20,
+                                family: "'Noto Sans KR', sans-serif",
+                                weight: 700,
+                            },
+                            text: '오늘 시간'
+                        },
+                        ticks: {
+                            display: true, // 틱 표시 여부
+                            color: 'black',
+                            padding: 8,
+                            stepSize: 10, // 틱 간격
+                            autoSkip: true, // 자동 건너뛰기
+                            autoSkipPadding: 15, // 자동 건너뛰기 패딩
+                            // callback: (value) => {
+                            //     // 틱 라벨 커스터마이징
+                            //     return value;
+                            // },
+                        },
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            font: {
+                                size: 20,
+                                family: "'Noto Sans KR', sans-serif",
+                                weight: 700,
+                            },
+                            text: '온도 ( ˚C )'
+                        },
+                        ticks: { // y축 줄당 표시 값
+                            stepSize: 10
+                        }
+                    }
+                }
+            }
+        });
+        const bars = document.getElementById('bars');
+        new Chart(bars, {
+            type: 'bar',
+            data: {
+                labels: times,
+                datasets: [
+                    {
+                        label: '배송(˚C)',
+                        data: xdata_1
+                    },
+                    {
+                        label: '외부(˚C)',
+                        data: xdata_2
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    x: {
+                        grid: {
+
+                        },
+                        axis: 'x',
+                        title: {
+                            display: true,
+                            font: {
+                                size: 20,
+                                family: "'Noto Sans KR', sans-serif",
+                                weight: 700,
+                            },
+                            text: '오늘 시간'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            font: {
+                                size: 20,
+                                family: "'Noto Sans KR', sans-serif",
+                                weight: 700,
+                            },
+                            text: '온도 ( ˚C )'
+                        }
+                    }
+                }
+            }
+        });
+        const bubble_data = document.getElementById('bubble');
+        new Chart(bubble_data, {
+            type: "bubble",
+            data: {
+                labels: times,
+                datasets: [
+                    {
+                        label: '배송(˚C)',
+                        data: [
+                            {x:20,y:5, r:10},
+                        ],
+                    },
+                    {
+                        label: '외부(˚C)',
+                        data: xdata_2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: '버블차트'
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
