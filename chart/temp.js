@@ -1070,30 +1070,82 @@ let times = temperatureData1.map(function(entry) {
     return entry.time;
 });
 
-let xdata_1 = temperatureData1.map(function(entry) {
-    return entry.temp;
-})
-let xdata_2 = temperatureData2.map(function(entry) {
-    return entry.temp;
-})
+function ChartData(arr){
+    return arr.map(function(entry) {
+        return entry.temp;
+    });
+}
+
+let xdata_1 = ChartData(temperatureData1);
+let xdata_2 = ChartData(temperatureData2);
 
 //시간 별 평균 온도 구하기
 //1-1. 분으로 된것들 시간으로만 정리
 let hours_temp = temperatureData1.map(entry => ({
     hour: entry.time.split(":")[0].trim(), // 시간만 추출
-    temp: entry.temp // 원래 온도값 유지
+    temp: parseFloat(entry.temp) // 원래 온도값 유지
 }));
-// console.log(hours_temp)
+console.log(hours_temp)
 //1-2. 시간이 같은 object만 묶기
-let temp_avg = hours_temp.reduce((acc,curr) => {
+let group_temp = hours_temp.reduce((acc,curr) => {
     let { hour } = curr;
     if( acc[hour]) acc[hour].push(curr);
     else acc[hour] = [curr];
     return acc;
 },{});
-console.log(temp_avg);
+console.log("시간대 별로 그룹화"+group_temp);
 //2. 그룹화 된 temp 평균 구하기
-let avg = temp_avg.map(function(entry) {
-    return entry.hour;
-})
+let avg_temp = Object.keys(group_temp).map(hour => {
+    let temps = group_temp[hour].map(entry => entry.temp); 
+    let avg = temps.reduce((sum, temp) => sum + temp, 0) / temps.length; 
+    return { hour, temp: avg.toFixed(2) };
+});
+console.log("시간대 별 평균온도"+avg_temp);
 //3. 차트에 쓸수있도록 map()으로 변환
+let today = Object.keys(group_temp);
+let xadata_avg1 = ChartData(avg_temp);
+
+
+function reducegr(arr,pro){
+   let transtime = arr.map(entry => ({
+        time: entry.time.split(":")[0].trim(),
+        temp: parseFloat(entry.temp)}));
+    let adata = transtime.reduce(function (acc,curr) {
+        let key = curr[pro];
+        if (! acc[key]) {
+            acc[key] = [];
+        }
+        acc[key].push(curr);
+        return acc;
+    },{})
+    let avggg = Object.keys(adata).map(time => {
+        let t = adata[time].map(entry => entry.temp);
+        let a = t.reduce((sum,temp) => sum + temp, 0) /t.length;
+        return { time, temp: a.toFixed(2) };
+    });
+    return avggg;
+}
+let aaa = reducegr(temperatureData2,'time');
+console.log("리듀스"+aaa);
+let xadata_avg2 = ChartData(aaa);
+
+//다른 방법으로 구해보기
+const users = [
+    { name: "John", age: 25, country: "US" },
+    { name: "Jane", age: 30, country: "KR" },
+    { name: "Robin", age: 22, country: "CA" },
+    { name: "Doe", age: 13, country: "US" },
+    { name: "Smith", age: 20, country: "KR" },
+  ];
+
+// const userbycountry = Object.groupBy(users,({country}) => country);
+// console.log(userbycountry)
+
+// const mapgroupby = Map.groupBy(users,({country}) => country);
+// console.log(mapgroupby);
+
+// const objgroupby = Object.groupBy(hours_temp,({hour}) => hour);
+
+// const mapgroupby = Map.groupBy(hours_temp,({hour}) => hour);
+// console.log(objgroupby);
+// console.log(mapgroupby);

@@ -11,7 +11,7 @@
         display: grid;
         grid-template-columns: repeat(2, auto);
         gap: 50px;
-        width: 700px;
+        width: 850px;
     }
 </style>
 
@@ -20,6 +20,7 @@
         <canvas id="line"></canvas>
         <canvas id="bars"></canvas>
         <canvas id="bubble"></canvas>
+        <canvas id="mixchart"></canvas>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script
@@ -102,21 +103,32 @@
         new Chart(bars, {
             type: 'bar',
             data: {
-                labels: times,
+                labels: today,
                 datasets: [
                     {
                         label: '배송(˚C)',
-                        data: xdata_1
+                        data: xadata_avg1
                     },
                     {
                         label: '외부(˚C)',
-                        data: xdata_2
+                        data: xadata_avg2
                     }
                 ]
             },
             options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        font: {
+                            size: 30,
+                        },
+                        text: '시간별 평균 온도'
+                    },
+                },
                 scales: {
                     x: {
+                        stacked: true,
                         grid: {
 
                         },
@@ -129,7 +141,19 @@
                                 weight: 700,
                             },
                             text: '오늘 시간'
-                        }
+                        },
+                        ticks: {
+                            display: true, // 틱 표시 여부
+                            color: 'black',
+                            padding: 8,
+                            stepSize: 10, // 틱 간격
+                            autoSkip: true, // 자동 건너뛰기
+                            autoSkipPadding: 15, // 자동 건너뛰기 패딩
+                            // callback: (value) => {
+                            //     // 틱 라벨 커스터마이징
+                            //     return value;
+                            // },
+                        },
                     },
                     y: {
                         title: {
@@ -147,17 +171,16 @@
         });
         const bubble_data = document.getElementById('bubble');
         new Chart(bubble_data, {
-            type: "bubble",
             data: {
                 labels: times,
                 datasets: [
                     {
+                        type: "bar",
                         label: '배송(˚C)',
-                        data: [
-                            {x:20,y:5, r:10},
-                        ],
+                        data: xdata_1
                     },
                     {
+                        type: "line",
                         label: '외부(˚C)',
                         data: xdata_2
                     }
@@ -171,7 +194,99 @@
                     },
                     title: {
                         display: true,
-                        text: '버블차트'
+                        text: '믹스차트'
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            display: true, // 틱 표시 여부
+                            color: 'black',
+                            padding: 8,
+                            stepSize: 10, // 틱 간격
+                            autoSkip: true, // 자동 건너뛰기
+                            autoSkipPadding: 14, // 자동 건너뛰기 패딩
+                            // callback: (value) => {
+                            //     // 틱 라벨 커스터마이징
+                            //     return value;
+                            // },
+                        },
+                        grid: {
+                            display : false
+                        },
+                        max : 10
+                    },
+                    y: {
+                        grid: {
+                            // display : false
+                        }
+                    }
+                }
+            }
+        });
+        const mixchart = document.getElementById('mixchart');
+        new Chart(mixchart, {
+            data: {
+                labels: today,
+                datasets: [
+                    {
+                        type: "bar",
+                        label: '배송(˚C)',
+                        data: xadata_avg1
+                    },
+                    {
+                        type: "line",
+                        label: '외부(˚C)',
+                        data: xadata_avg2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: '믹스차트'
+                    },
+                    subtitle: {
+                        display: true,
+                        text: '시간별 평균기온',
+                        color: 'darkgray',
+                        font: {
+                            size: 20,
+                            weight: 'bold',
+                        },
+                        padding: { // 범례와 사이간격
+                            bottom: 10
+                        }
+                    },
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            display: true, // 틱 표시 여부
+                            color: 'black',
+                            padding: 8,
+                            stepSize: 10, // 틱 간격
+                            autoSkip: true, // 자동 건너뛰기
+                            autoSkipPadding: 14, // 자동 건너뛰기 패딩
+                            // callback: (value) => {
+                            //     // 틱 라벨 커스터마이징
+                            //     return value;
+                            // },
+                        },
+                        grid: {
+                            display : false
+                        },
+                        // max : 10
+                    },
+                    y: {
+                        grid: {
+                            // display : false
+                        }
                     }
                 }
             }
