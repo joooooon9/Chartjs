@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    #main {
+        width: 100%;
+        height: 500px;
+    }
+</style>
+
+<body>
+    <div id="main"></div>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
+    <script src="./temp.js"></script>
+    <script>
+var chartDom = document.getElementById('main');
+var myChart = echarts.init(chartDom);
+var option;
+
+option = {
+  title: {
+    text: '실시간 배송 온도'
+  },
+  tooltip: {
+    trigger: 'axis'
+  },
+  legend: {
+    data: ['내부', '외부']
+  },
+  grid: {
+    left: '3%',
+    right: '4%',
+    bottom: '3%',
+    containLabel: true
+  },
+  toolbox: {
+    feature: {
+      saveAsImage: {}
+    }
+  },
+  xAxis: {
+    type: 'category',
+    boundaryGap: false,
+    data: times
+  },
+  yAxis: {
+    type: 'value'
+  },
+  series: [
+    {
+      name: '내부',
+      type: 'line',
+      stack: 'Total',
+      data: xdata_1,
+      itemStyle: { nomal : {color:'#8c8c8c',lineStyle:{color:'#8c8c8c'}}}
+    },
+    {
+      name: '외부',
+      type: 'line',
+      stack: 'Total',
+      data: xdata_2,
+      itemStyle: { nomal : {color:'#8c8c8c',lineStyle:{color:'#8c8c8c'}}}
+    }
+  ]
+};
+
+option && myChart.setOption(option);
+    </script>
+</body>
+
+</html>

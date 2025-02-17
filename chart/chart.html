@@ -21,6 +21,7 @@
         <canvas id="bars"></canvas>
         <canvas id="bubble"></canvas>
         <canvas id="mixchart"></canvas>
+        <canvas id="radar"></canvas>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script
@@ -212,9 +213,9 @@
                             // },
                         },
                         grid: {
-                            display : false
+                            display: false
                         },
-                        max : 10
+                        max: 10
                     },
                     y: {
                         grid: {
@@ -279,7 +280,7 @@
                             // },
                         },
                         grid: {
-                            display : false
+                            display: false
                         },
                         // max : 10
                     },
@@ -290,6 +291,22 @@
                     }
                 }
             }
+        })
+        const radar = document.getElementById("radar");
+        new Chart(radar, {
+            type: 'radar',
+            options: {
+                animation: true,
+            },
+            datasets: [
+                {
+                    label: [1, 2, 3, 4, 5],
+                    data: [80, 90, 70, 85, 75],
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 2
+                }
+            ]
         })
     </script>
 </body>
